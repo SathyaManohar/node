@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>BlogPage</title>
+</head>
+<body>
+    <%- include('./partials/nav') %>
+    <div class="container">
+        <h1><%= blog.title %></h1>
+        <img src="<%= blog.coverimageurl %>" width="600px" alt="myblog">
+        <p><%= blog.body %></p>
+    </div>
+
+    <div class="container">
+        <img src="<%= blog.createdby.profileimageurl %>" width="200px"> <%= blog.createdby.fullname %>
+    </div>
+
+    <h1>Comments</h1>
+    <% if (locals.user) { %>
+        <div class="container">
+            <form action="/blog/comment/<%= blog._id %>" method="post">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="content" placeholder="Enter your comment here">
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+        </div>
+        <fieldset>
+            <div class="container mt-3">
+                <% comments.forEach(comment => { %>
+                    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 15px; background-color: #f9f9f9;">
+                        <p style="font-size: 16px; color: #333; margin-bottom: 5px;">
+                            <span style="font-weight: bold; color: #007bff;">💬 Comment:</span> <%= comment.content %>
+                        </p>
+                        <p style="font-size: 14px; color: #555; margin: 0;">
+                            <span style="font-weight: bold; color: #28a745;">👤 By:</span> <%= comment.createdby.fullname %>
+                        </p>
+                    </div>
+                <% }) %>
+            </div>
+        </fieldset>
+    <% } else { %>
+        <div class="container mt-3" style="text-align: center; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+            <p style="font-size: 18px; color: #333; margin-bottom: 10px;">
+                🚪 Please <a href="/user/signin" style="color: #007bff; font-weight: bold;">Sign In</a> to add a comment.
+            </p>
+            <p style="font-size: 16px; color: #555;">
+                Don't have an account? <a href="/user/signup" style="color: #28a745; font-weight: bold;">Sign Up</a> now!
+            </p>
+        </div>
+    <% } %>
+
+    <%- include('./partials/scripts') %>
+</body>
+</html>
